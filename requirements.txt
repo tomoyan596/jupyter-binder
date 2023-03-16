@@ -1,0 +1,1 @@
+jupyterlab-language-pack-ja-JP==3.6.post0
