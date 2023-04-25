@@ -36,33 +36,31 @@ def detach(c):
     """
 
 def tmux_run(*args, **kwargs):
+    #print('=== fabfile.tmux.@tmux_run')
+    """print(f'args: {args}' if args else '' +
+          ', ' if args and kwargs else '' +
+          f', kwargs: {kwargs}' if kwargs else '')"""
+    
     if len(args) == 1 and callable(args[0]):
-        print(f'args: {args}, kwargs: {kwargs}')
         func = args[0]
+        #sig = inspect.signature(func)
+        #params = sig.parameters.keys()
+        #print(f'params: {params}')
         
         def inner(*args, **kwargs):
-            sig = inspect.signature(func)
-            keys = sig.parameters.keys()
-            if len(keys) == 1:
-                c = args[0]
-                
-                enterResponder = Responder(
-                    pattern=r'\n>',
-                    response='\n'
-                )
-                task_result = c.run(
-                    "tmux a -t Fabric",
-                    hide=False, pty=True,
-                    watchers=[enterResponder]
-                )
-                
-                func_result = func(*args)
-            else:
-                func_result = func(*args, **kwargs)
-            print('===== detach')
-            detach(c)
-            return func_result
+            """
+            if args and kwargs:
+                result = func(*args, **kwargs)
+            elif args:
+                result = func(*args)
+            elif kwargs:
+                result = func(**kwargs)
+            
+            return result
+            """
+            return func(*args)
         
         inner.__name__ = func.__name__
+        inner.__doc__ = func.__doc__
         
         return inner

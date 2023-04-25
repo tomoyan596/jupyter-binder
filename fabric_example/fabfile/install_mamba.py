@@ -6,8 +6,7 @@ from . import CheckInstallation, tmux_run
 @task
 @tmux_run
 def Mamba_CheckInstalled(c):
-    result = CheckInstallation(c, 'rustup')
-    return result
+    return CheckInstallation(c, 'micromamba')
 
 @task
 @tmux_run
@@ -24,7 +23,7 @@ def Mamba_Install(c):
         # install.sh が shell を判定するので | bash である必要がある🤔
         #"curl --proto '=https' --tlsv1.2 -sSf https://micro.mamba.pm/install.sh | sh",
         "curl --proto '=https' --tlsv1.2 -sSf https://micro.mamba.pm/install.sh | bash",
-        hide=False, pty=True,
+        echo=True, hide=False, pty=True,
         watchers=[enterResponder]
     )
     #print(result.stdout.strip())
@@ -42,5 +41,5 @@ def Mamba_Uninstall(c):
     )
     result = c.run(
         "rustup self uninstall",
-        pty=True,
+        echo=True, pty=True,
         watchers=[yesResponder])

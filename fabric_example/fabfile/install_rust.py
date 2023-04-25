@@ -22,7 +22,11 @@ def Rust_Install(c):
     )
     result = c.run(
         "curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh",
-        hide=False, pty=True,
+        echo=True, hide=False, pty=True,
+        watchers=[enterResponder])
+    result = c.run(
+        "$SHELL -l",
+        echo=True, hide=False, pty=True,
         watchers=[enterResponder])
     #print(result.stdout.strip())
 
@@ -39,6 +43,6 @@ def Rust_Uninstall(c):
     )
     result = c.run(
         'rustup self uninstall',
-        pty=True,
+        echo=True, pty=True,
         watchers=[yesResponder]
     )
